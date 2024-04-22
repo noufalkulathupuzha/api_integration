@@ -40,6 +40,24 @@ class EmployeeController extends Controller
         return view('employee.create');
     }
 
+    public function store()
+    {
+        $request = request();
+        $response = Http::post('https://61ee7a55d593d20017dbae9c.mockapi.io/api/employee/', [
+            'name' => $request->name,
+            'companyName' => $request->companyName,
+            'gender' => $request->gender,
+            'salary' => $request->salary,
+            'city' => $request->city,
+        ]);
+        $employeeJson = $response->json();
+        $employee = $this->toEmployee($employeeJson);
+
+        return view('employee.show', ['employee' => $employee]);
+    }
+
+
+
     /**
      * Display the specified resource.
      */
