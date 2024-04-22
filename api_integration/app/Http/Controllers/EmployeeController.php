@@ -40,37 +40,55 @@ class EmployeeController extends Controller
      * Display the specified resource.
      */
     public function show()
-    
-    
+
+
     {
         $employee_id = request()->employee;
-        $employee = new Employee();
-        $response = Http::get('https://61ee7a55d593d20017dbae9c.mockapi.io/api/employee/'.$employee_id);
+        $response = Http::get('https://61ee7a55d593d20017dbae9c.mockapi.io/api/employee/' . $employee_id);
         $employeeJson = $response->json();
-        $employee->name = $employeeJson['name'];
-        $employee->companyName = $employeeJson['companyName'];
-        $employee->gender = $employeeJson['gender'];
-        $employee->salary = $employeeJson['salary'];
-        $employee->city = $employeeJson['city'];
-        $employee->id = $employeeJson['id'];
-        
-        return view('employee.show',['employee'=>$employee]);
+        $employee = $this->toEmployee($employeeJson);
+
+        return view('employee.show', ['employee' => $employee]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Employee $employee)
+    public function edit()
     {
-        //
+
+
+        
+        $employee_id = request()->employee;
+        $response = Http::get('https://61ee7a55d593d20017dbae9c.mockapi.io/api/employee/' . $employee_id);
+        $employeeJson = $response->json();
+        $employee = $this->toEmployee($employeeJson);
+
+        return view('employee.edit', ['employee' => $employee]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Employee $employee)
+    public function update(Request $request, $id)
     {
-        //
+        $response = Http::put('https://61ee7a55d593d20017dbae9c.mockapi.io/api/employee/' . $id, [
+            'name' => $request->name,
+            'companyName' => $request->companyName,
+            'gender' => $request->gender,
+            'salary' => $request->salary,
+            'city' => $request->city,
+        ]);
+        if ($response->successful()) {
+            $response = Http::get('https://61ee7a55d593d20017dbae9c.mockapi.io/api/employee/' . $id);
+            $employeeJson = $response->json();
+            $employee = $this->toEmployee($employeeJson);
+            // Data updated successfully
+            return redirect()->route('employee.show', ['employee'=>$employee])->with('success', 'Employee updated successfully!');
+        } else {
+            // Handle the error if the request failed
+            return redirect()->back()->with('error', 'Failed to update employee. Please try again.');
+        }
     }
 
     /**
@@ -79,5 +97,17 @@ class EmployeeController extends Controller
     public function destroy(Employee $employee)
     {
         //
+    }
+    public function toEmployee($employeeJson)
+    {
+        $employee = new Employee();
+
+        $employee->name = $employeeJson['name'];
+        $employee->companyName = $employeeJson['companyName'];
+        $employee->gender = $employeeJson['gender'];
+        $employee->salary = $employeeJson['salary'];
+        $employee->city = $employeeJson['city'];
+        $employee->id = $employeeJson['id'];
+        return $employee;
     }
 }
