@@ -12,3 +12,7 @@ Also added Delete button that delete employee and goto employees list.
 
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 85d187240952d1d0a5f47d6a0c428a8ad08b41d4
