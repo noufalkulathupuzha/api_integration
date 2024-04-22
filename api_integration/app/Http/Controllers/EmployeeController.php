@@ -34,7 +34,11 @@ class EmployeeController extends Controller
 
         return view('employee.index', ['employees' => $employeesPaginated]);
     }
-
+    // Method to show the create employee form
+    public function create()
+    {
+        return view('employee.create');
+    }
 
     /**
      * Display the specified resource.

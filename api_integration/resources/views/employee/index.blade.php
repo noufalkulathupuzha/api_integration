@@ -1,6 +1,16 @@
 <x-layout>
-
     <h1 class="text-3xl font-semibold text-center mb-8">Employee List</h1>
+
+  <!-- Create Employee Button -->
+<div class="flex justify-center mb-6">
+    <a href="{{ route('employee.create') }}" class="inline-flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline">
+        <svg class="w-6 h-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+        </svg>
+        Create Employee
+    </a>
+</div>
+
 
     <!-- Employee Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -22,5 +32,4 @@
     <div class="mt-4">
         {{ $employees->links() }}
     </div>
-    
 </x-layout>
