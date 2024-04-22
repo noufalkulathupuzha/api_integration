@@ -58,7 +58,7 @@ class EmployeeController extends Controller
     {
 
 
-        
+
         $employee_id = request()->employee;
         $response = Http::get('https://61ee7a55d593d20017dbae9c.mockapi.io/api/employee/' . $employee_id);
         $employeeJson = $response->json();
@@ -84,7 +84,7 @@ class EmployeeController extends Controller
             $employeeJson = $response->json();
             $employee = $this->toEmployee($employeeJson);
             // Data updated successfully
-            return redirect()->route('employee.show', ['employee'=>$employee])->with('success', 'Employee updated successfully!');
+            return redirect()->route('employee.show', ['employee' => $employee])->with('success', 'Employee updated successfully!');
         } else {
             // Handle the error if the request failed
             return redirect()->back()->with('error', 'Failed to update employee. Please try again.');
@@ -94,9 +94,18 @@ class EmployeeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Employee $employee)
+    public function destroy($id)
     {
-        //
+        // Send a DELETE request to the API endpoint to delete the employee
+        $response = Http::delete('https://61ee7a55d593d20017dbae9c.mockapi.io/api/employee/' . $id);
+        // Check if the request was successful
+        if ($response->successful()) {
+            // Employee deleted successfully, redirect back to the index page
+            return redirect()->route('employee.index')->with('success', 'Employee deleted successfully.');
+        } else {
+            // Handle the error if the request failed
+            return redirect()->back()->with('error', 'Failed to delete employee. Please try again.');
+        }
     }
     public function toEmployee($employeeJson)
     {
