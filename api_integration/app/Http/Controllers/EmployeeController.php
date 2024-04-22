@@ -24,6 +24,7 @@ class EmployeeController extends Controller
             $employee->gender = $employeeJson['gender'];
             $employee->salary = $employeeJson['salary'];
             $employee->city = $employeeJson['city'];
+            $employee->id = $employeeJson['id'];
             $employees[] = $employee;
         }
         $perPage = 12; // Change 10 to the number of items per page you want
@@ -38,10 +39,45 @@ class EmployeeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Employee $employee)
+    public function show()
+    
+    
+    {
+        $employee_id = request()->employee;
+        $employee = new Employee();
+        $response = Http::get('https://61ee7a55d593d20017dbae9c.mockapi.io/api/employee/'.$employee_id);
+        $employeeJson = $response->json();
+        $employee->name = $employeeJson['name'];
+        $employee->companyName = $employeeJson['companyName'];
+        $employee->gender = $employeeJson['gender'];
+        $employee->salary = $employeeJson['salary'];
+        $employee->city = $employeeJson['city'];
+        $employee->id = $employeeJson['id'];
+        
+        return view('employee.show',['employee'=>$employee]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Employee $employee)
     {
         //
     }
 
-   
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Employee $employee)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Employee $employee)
+    {
+        //
+    }
 }
