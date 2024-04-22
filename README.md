@@ -9,6 +9,8 @@ Employee Page :
 Edit Employee :
 ![edit_employee](https://github.com/noufalkulathupuzha/api_integration/assets/88814850/d96c8200-bd75-4335-8282-aca0cafe8300)
 Also added Delete button that delete employee and goto employees list.
+create Emloyee:
+![employee_create](https://github.com/noufalkulathupuzha/api_integration/assets/88814850/84c88b30-f6a2-4fe4-9d45-a93021db8a58)
 
 
 
