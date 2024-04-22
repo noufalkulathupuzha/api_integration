@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class EmployeeController extends Controller
 {
@@ -25,7 +26,12 @@ class EmployeeController extends Controller
             $employee->city = $employeeJson['city'];
             $employees[] = $employee;
         }
-        return view('employee.index',['employees'=>$employees]);
+        $perPage = 12; // Change 10 to the number of items per page you want
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $currentItems = array_slice($employees, ($currentPage - 1) * $perPage, $perPage);
+        $employeesPaginated = new LengthAwarePaginator($currentItems, count($employees), $perPage, $currentPage, ['path' => LengthAwarePaginator::resolveCurrentPath()]);
+
+        return view('employee.index', ['employees' => $employeesPaginated]);
     }
 
     /**
