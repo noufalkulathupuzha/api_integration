@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class EmployeeController extends Controller
 {
@@ -12,7 +13,19 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        //
+        $response = Http::get('https://61ee7a55d593d20017dbae9c.mockapi.io/api/employee');
+        $employeesJsonList = $response->json();
+        $employees = [];
+        foreach ($employeesJsonList as $employeeJson) {
+            $employee = new Employee();
+            $employee->name = $employeeJson['name'];
+            $employee->companyName = $employeeJson['companyName'];
+            $employee->gender = $employeeJson['gender'];
+            $employee->salary = $employeeJson['salary'];
+            $employee->city = $employeeJson['city'];
+            $employees[] = $employee;
+        }
+        return view('employee.index',['employees'=>$employees]);
     }
 
     /**
